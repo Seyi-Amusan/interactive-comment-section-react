@@ -1,23 +1,44 @@
-import logo from './logo.svg';
+
+import { useEffect, useState } from 'react';
 import './App.css';
+import CommentContainer from './components/commentContainer';
+
 
 function App() {
+
+  const [thread, setThread] = useState({
+    currentUser: {},
+    comments: []
+  })
+
+  useEffect(() => {
+    fetch('./data.json')
+      .then(res => res.json())
+      .then(data => setThread(data))
+  }, [])
+
+  useEffect(() => {
+    console.log(thread.comments[0]);
+  }, [thread])
+
+  const { currentUser, comments } = thread
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className='main'>
+        {
+          comments?.map((comment) => {
+            const { score, content, id, user, createdAt } = comment
+            return <CommentContainer
+              key={id}
+              vote={score}
+              content={content}
+              user={user}
+              createdAt={createdAt}
+            />
+          })
+        }
+      </div>
     </div>
   );
 }
