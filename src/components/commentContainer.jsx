@@ -3,17 +3,16 @@ import CommentHeader from "./commentHeader";
 import ActionButton from "./actionButtons";
 
 function CommentContainer(props) {
-    const { vote, content, user, createdAt } = props
-
-    console.log(user);
-    
+    const { vote, content, user, createdAt, replyComment, replyingTo, isOwnComment } = props
     
     return (
-        <div className="comment-container">
+        <div className={`comment-container ${replyComment ? 'reply-comment-container' : ''}`}>
             <Vote vote={vote} />
             <CommentHeader user={user} createdAt={createdAt} />
-            <ActionButton src='./images/icon-reply.svg' type='Reply' />
-            <p className="comment">{content}</p>
+            <ActionButton isOwnComment={isOwnComment} />
+            <p className="comment">
+                {replyingTo && <span className="replying-to">@{replyingTo}</span>} {content}
+            </p>
         </div>
     );
 }

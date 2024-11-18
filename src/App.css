@@ -14,6 +14,10 @@ body{
   font-family: "Rubik", sans-serif;
 }
 
+button{
+  cursor: pointer;
+}
+
 .main{
   width: 70rem;
   margin: 5rem auto;
@@ -30,6 +34,21 @@ body{
   grid-template-rows: max-content 1fr;
   column-gap: 2.8rem;
   row-gap: 1rem;
+}
+
+.replies{
+  display: grid;
+  justify-items: end;
+}
+
+.reply-comment-container{
+  width: 90%;
+}
+
+.replying-to{
+  font-weight: bold;
+  font-size: 2rem;
+  color: hsl(238, 40%, 52%);
 }
 
 .vote-container{
@@ -76,8 +95,15 @@ body{
   color:  hsl(211, 10%, 45%);
 }
 
+.action-button-group{
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 2rem;
+}
+
 .action-button-container{
   align-self: center;
+  cursor: pointer;
 }
 
 .action-button-text{
@@ -88,8 +114,12 @@ body{
 }
 
 
-.Reply{
+.reply, .edit{
   color: hsl(238, 40%, 52%);
+}
+
+.delete{
+  color: hsl(358, 79%, 66%);
 }
 
 .comment{
@@ -97,4 +127,47 @@ body{
   color:  hsl(211, 10%, 45%);
 
   grid-column: span 2;
+}
+
+
+.input-container{
+  width: 70rem;
+  height: 15rem;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  background-color: hsl(0, 0%, 100%);
+
+  display: grid;
+  grid-template-columns: max-content 1fr max-content;
+  align-items: start;
+  column-gap: 1.5rem;
+
+}
+
+textarea{
+  height: 100%;
+  border-radius: 1rem;
+  border: 1px solid hsl(223, 19%, 93%); 
+  padding: 1.5rem;
+}
+
+textarea::placeholder{
+  font-size: 2rem;
+  color:  hsl(211, 10%, 45%);
+}
+
+.input-avatar{
+  width: 4.5rem;
+}
+
+.send-button{
+  padding: 1.5rem 2rem;
+  font-weight: bold;
+  font-size: 2.1rem;
+  border: none;
+  border-radius: 1rem;
+  text-transform: uppercase;
+  color: hsl(0, 0%, 100%);
+  background-color: hsl(238, 40%, 52%);
 }
