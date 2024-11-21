@@ -1,15 +1,18 @@
 
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import './App.css';
 import CommentContainer from './components/commentContainer';
+
+export const ThreadContext = createContext()
 
 
 function App() {
 
+
   const [thread, setThread] = useState({
     currentUser: {},
-    comments: []
-  })
+    comments: [],
+  });
 
   //state to handle new user comments
   const [newCommentContent, setNewCommentContent] = useState('')
@@ -21,11 +24,19 @@ function App() {
       .then(data => setThread(data))
   }, [])
 
-  useEffect(() => {
-    console.log(thread.currentUser);
-  }, [thread])
+  // useEffect(() => {
+  //   // console.log(thread.currentUser);
+
+  // }, [thread])
 
   const { currentUser, comments } = thread
+
+
+  //function to distinguish comments made by logged in user
+  const checkIsOwnComment = (commnetAuthor, currentUser) => {
+    if (commnetAuthor == currentUser) return true
+    return false
+  }
 
 
   // Function to add a new comment
@@ -41,7 +52,7 @@ function App() {
       content: content, // The content passed as an argument
       user: currentUser, 
       createdAt: 'Just now',
-      isOwnComment: true //if comment is made by logged in user
+      isOwnComment: true
     };
   
     //update the thread state with new commnet object
@@ -58,75 +69,85 @@ function App() {
 
 
     return (
-      
-      <div>
-        <div className='main'>
-          {
-            comments?.map((comment) => {
-              const { score, content, id, user, createdAt, replies, isOwnComment=false } = comment
-              return (
-                <div key={id}>
-                  <CommentContainer
-                    key={id}
-                    vote={score}
-                    content={content}
-                    user={user}
-                    createdAt={createdAt}
-                    isOwnComment={isOwnComment}
-                  />
 
-                  {/* if there are replies to the comment node */}
+      <ThreadContext.Provider value={{thread, setThread}}>
+        <div>
+          <div className='main'>
+            {
+              (comments && comments.length > 0)
+              ? comments?.map((comment) => {
+                const { score, content, id, user, createdAt, replies } = comment
+                return (
+                  <div key={id}>
+                    <CommentContainer
+                      key={id}
+                      commentId={id}
+                      vote={score}
+                      content={content}
+                      user={user}
+                      createdAt={createdAt}
+                      isOwnComment={checkIsOwnComment(user.username, currentUser.username)}
+                    />
 
-                  {
-                    replies && replies.length > 0 && (
-                      <div className='replies'>
+                    {/* if there are replies to the comment node */}
 
-                        {replies.map((reply) => {
+                    {
+                      replies && replies.length > 0 && (
+                        <div className='replies'>
 
-                          const { score, content, id, user, createdAt, replyingTo } = reply
-                        
-                          return <CommentContainer
-                            replyComment={true}
-                            replyingTo={replyingTo}
-                            key={id}
-                            vote={score}
-                            content={content}
-                            user={user}
-                            createdAt={createdAt}
-                          />
+                          {replies.map((reply) => {
 
-                        })}
-                      </div>
-                    )
-                  }
-                </div>
-              )
-            })
-          }
+                            const { score, content, id, user, createdAt, replyingTo } = reply
+
+                            // console.log(reply);
+                            
+                          
+                            return <CommentContainer
+                              replyComment={true}
+                              replyingTo={replyingTo}
+                              key={id}
+                              commentId={id}
+                              vote={score}
+                              content={content}
+                              user={user}
+                              createdAt={createdAt}
+                              isOwnComment={checkIsOwnComment(user.username, currentUser.username)}
+                            />
+
+                          })}
+                        </div>
+                      )
+                    }
+                  </div>
+                )
+              })
+              : <p className='loading'>Loading discussion...</p>
+            }
+          </div>
+
+          <div className='input-container'>
+
+            <img className='input-avatar' src={currentUser?.image?.png} alt='' />
+
+            <textarea
+              placeholder='Add a comment...'
+              value={newCommentContent}
+              onChange={(event) => setNewCommentContent(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key == 'Enter' && !event.shiftKey) {
+                  event.preventDefault()
+                  handleAddComment(newCommentContent)
+                }
+              }}
+            />
+
+            <button
+              className='send-button'
+              onClick={() => handleAddComment(newCommentContent)}
+            >send</button>
+          </div>
         </div>
-
-        <div className='input-container'>
-
-          <img className='input-avatar' src={currentUser.image?.png} alt='' />
-
-          <textarea
-            placeholder='Add a comment...'
-            value={newCommentContent}
-            onChange={(event) => setNewCommentContent(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key == 'Enter' && !event.shiftKey) {
-                event.preventDefault()
-                handleAddComment(newCommentContent)
-              }
-            }}
-          />
-
-          <button
-            className='send-button'
-            onClick={() => handleAddComment(newCommentContent)}
-          >send</button>
-        </div>
-    </div>
+      </ThreadContext.Provider>
   );
 }
 

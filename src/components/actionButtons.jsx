@@ -1,21 +1,41 @@
-function renderActionButton(iconSrc, text, className) {
-    return(
-     <div className="action-button-container">
-        <img className="action-button-icon" src={iconSrc} alt="" />
-        <span className={`action-button-text ${className}`}>{text}</span>
-    </div>)
-};
+import { useContext } from "react";
+import { ThreadContext } from "../App";
 
-function ActionButton({ isOwnComment }) {
+function ActionButton({ isOwnComment, commentId }) {
+
+    const {thread, setThread} = useContext(ThreadContext)
+
+    const handleDeleteComment = () => {
+        setThread((prevThread) => {
+            const updatedComments = prevThread.comments.filter((comment) => comment.id !== commentId)
+            return {
+                ...prevThread,
+                comments: updatedComments
+            }
+        })
+        
+    }
     
     return (
         isOwnComment ? (
             <div className="action-button-group">
-                {renderActionButton('./images/icon-delete.svg', 'Delete', 'delete')}
-                {renderActionButton('./images/icon-edit.svg', 'Edit', 'edit')}
+                <div className="action-button-container" onClick={handleDeleteComment}>
+                    <img
+                        className="action-button-icon"
+                        src='/images/icon-delete.svg' alt=""
+                    />
+                    <span className={'action-button-text delete'}>Delete</span>
+                </div>
+                <div className="action-button-container">
+                    <img className="action-button-icon" src='/images/icon-edit.svg' alt="" />
+                    <span className={'action-button-text edit'}>Edit</span>
+                </div>
             </div>
         ) : (
-            renderActionButton('./images/icon-reply.svg', 'Reply', 'reply')
+            <div className="action-button-container">
+                <img className="action-button-icon" src='/images/icon-reply.svg' alt="" />
+                <span className={'action-button-text reply'}>reply</span>
+            </div>
         )
     );
     

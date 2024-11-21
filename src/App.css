@@ -14,7 +14,11 @@ body{
   font-family: "Rubik", sans-serif;
 }
 
-button{
+img{
+  user-select: none;
+}
+
+button, .upvote, .downvote{
   cursor: pointer;
 }
 
@@ -32,8 +36,9 @@ button{
   display: grid;
   grid-template-columns: max-content 1fr max-content;
   grid-template-rows: max-content 1fr;
-  column-gap: 2.8rem;
+  column-gap: 1.5rem;
   row-gap: 1rem;
+  align-items: center;
 }
 
 .replies{
@@ -42,7 +47,7 @@ button{
 }
 
 .reply-comment-container{
-  width: 90%;
+  width: 93%;
 }
 
 .replying-to{
@@ -75,8 +80,8 @@ button{
 
 .comment-header-container{
   display: grid;
-  grid-template-columns: max-content max-content 1fr;
-  column-gap: 2.2rem;
+  grid-template-columns: max-content max-content max-content max-content;
+  column-gap: 1rem;
   align-items: center;
 }
 
@@ -98,7 +103,7 @@ button{
 .action-button-group{
   display: grid;
   grid-auto-flow: column;
-  column-gap: 2rem;
+  column-gap: 1rem;
 }
 
 .action-button-container{
@@ -127,6 +132,13 @@ button{
   color:  hsl(211, 10%, 45%);
 
   grid-column: span 2;
+}
+
+.loading{
+  font-size: 2rem;
+  color:  hsl(211, 10%, 45%);
+  text-align: center;
+  font-weight: bold;
 }
 
 
@@ -170,4 +182,55 @@ textarea::placeholder{
   text-transform: uppercase;
   color: hsl(0, 0%, 100%);
   background-color: hsl(238, 40%, 52%);
+}
+
+.you{
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: hsl(0, 0%, 100%);
+  background-color: hsl(238, 40%, 52%);
+}
+
+textarea:focus{
+  border-color: hsl(238, 40%, 52%);
+  border-width: 1px;
+  outline: none;
+}
+
+#root > div{
+  padding: 0 2rem;
+}
+
+@media (max-width: 563px) {
+  .main, .input-container{
+    width: calc(100vw - 4rem);
+  }
+}
+
+@media (max-width: 490px) {
+  .reply-comment-container{
+    width: 97%;
+  }
+
+  .comment-container{
+    grid-template-columns: 1fr max-content;
+    /* grid-template-rows: repeat(3, max-content); */
+    row-gap: 2rem;
+  }
+
+  .vote-container{
+    grid-row: 3/4;
+    grid-auto-flow: column;
+  }
+
+  .comment-header-container{
+    grid-row: 1/2;
+  }
+
+  .action-button-container, .action-button-group{
+    grid-row: 3/4;
+    
+  }
 }
