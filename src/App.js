@@ -2,9 +2,9 @@
 import { createContext, useEffect, useState } from 'react';
 import './App.css';
 import CommentContainer from './components/commentContainer';
+import Modal from './components/Modal';
 
-export const ThreadContext = createContext()
-
+export const AppContext = createContext()
 
 function App() {
 
@@ -17,17 +17,18 @@ function App() {
   //state to handle new user comments
   const [newCommentContent, setNewCommentContent] = useState('')
 
+  //state to control modal to confirm comment deletion
+  const [showModal, setShowModal] = useState(false)
+
+  //state to identify id of comment to delete
+  const [commentId, setCommentId] = useState(0)
+
 
   useEffect(() => {
     fetch('./data.json')
       .then(res => res.json())
       .then(data => setThread(data))
   }, [])
-
-  // useEffect(() => {
-  //   // console.log(thread.currentUser);
-
-  // }, [thread])
 
   const { currentUser, comments } = thread
 
@@ -38,11 +39,10 @@ function App() {
     return false
   }
 
-
   // Function to add a new comment
   const handleAddComment = (content) => {
 
-    //do nothing for empty comments
+    //do nothing for empty inputs
     if (!content) return
     
     //creating a new comment object
@@ -70,7 +70,7 @@ function App() {
 
     return (
 
-      <ThreadContext.Provider value={{thread, setThread}}>
+      <AppContext.Provider value={{ showModal, setShowModal, commentId, setCommentId, thread, setThread}}>
         <div>
           <div className='main'>
             {
@@ -147,7 +147,8 @@ function App() {
             >send</button>
           </div>
         </div>
-      </ThreadContext.Provider>
+        <Modal />
+      </AppContext.Provider>
   );
 }
 

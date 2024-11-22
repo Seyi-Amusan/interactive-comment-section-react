@@ -1,80 +1,64 @@
 import { useContext } from "react";
-import { ThreadContext } from "../App";
+import { AppContext } from "../App";
 
 function Vote({ vote, commentId }) {
-
-    const { thread, setThread } = useContext(ThreadContext)
-
+    const { setThread } = useContext(AppContext);
 
     const handleVote = (type) => {
-        
         setThread((prevThread) => {
             const updatedComments = prevThread.comments.map((comment) => {
-                // console.log(comment.user.username, comment.id, commentId);
-                
-                if (comment.id == commentId) {
-                    return {
-                        ...comment, 
-                        score: type == 'upvote' ? comment.score + 1 : Math.max(0, comment.score - 1)
-                    }
-                    
-                } else {
-                    return comment
-                }
+                if (comment.id === commentId) {
+                    let newScore = comment.score;
+                    let newVoted = null;
 
-                
-            })
+                    if (!comment.voted) {
+                        // First-time vote
+                        newScore = type === "upvote" ? newScore + 1 : newScore - 1;
+                        newVoted = type;
+                    } else if (comment.voted === type) {
+                        // Undo the vote
+                        newScore = type === "upvote" ? newScore - 1 : newScore + 1;
+                        newVoted = null;
+                    } else {
+                        // Change vote type
+                        newScore =
+                            type === "upvote" ? newScore + 2 : newScore - 2;
+                        newVoted = type;
+                    }
+
+                    return {
+                        ...comment,
+                        score: Math.max(0, newScore),
+                        voted: newVoted,
+                    };
+                }
+                return comment;
+            });
 
             return {
                 ...prevThread,
-                comments: updatedComments
-            }
-        })
-    }
-    
-    
+                comments: updatedComments,
+            };
+        });
+    };
+
     return (
-
-    <div className="vote-container">
-        <img
-            className='upvote'
-            src="./images/icon-plus.svg"
-            alt=""
-            onClick={() => handleVote('upvote')}
-        />
-        <span className="vote-count">{vote}</span>
-        <img
-            className="downvote"
-            src="./images/icon-minus.svg"
-            alt=""
-            onClick={() => handleVote('downvote')}
-        />
-    </div>
-
+        <div className="vote-container">
+            <img
+                className="upvote"
+                src="./images/icon-plus.svg"
+                alt="Upvote"
+                onClick={() => handleVote("upvote")}
+            />
+            <span className="vote-count">{vote}</span>
+            <img
+                className="downvote"
+                src="./images/icon-minus.svg"
+                alt="Downvote"
+                onClick={() => handleVote("downvote")}
+            />
+        </div>
     );
 }
 
 export default Vote;
-
-
-// const handleVote = (type) => {
-//     setThread((prevThread) => {
-//       // Create a copy of the comments array
-//       const updatedComments = prevThread.comments.map((comment) => {
-//         // Find the comment to update
-//         if (comment.id === commentId) {
-//           return {
-//             ...comment,
-//             score: type === "upvote" ? comment.score + 1 : comment.score - 1,
-//           };
-//         }
-//         return comment;
-//       });
-
-//       // Return the updated thread
-//       return {
-//         ...prevThread,
-//         comments: updatedComments,
-//       };
-//     });
-//   };

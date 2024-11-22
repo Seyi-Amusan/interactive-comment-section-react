@@ -199,7 +199,7 @@ textarea:focus{
   outline: none;
 }
 
-#root > div{
+#root:first-child{
   padding: 0 2rem;
 }
 
@@ -234,3 +234,88 @@ textarea:focus{
     
   }
 }
+
+#hidden{
+  display: none;
+}
+
+.modal-bg{
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  top: 0;
+  background: hsla(211, 10%, 45%, 0.7);
+}
+
+.modal-container{
+  padding: 2.2rem;
+  border-radius: 1rem;
+  background: hsl(0, 0%, 100%);
+  width: 100vw;
+  max-width: 40rem;
+  box-shadow: 0 2px 2rem rgba(0, 0, 0, 0.486);
+
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: 1.8rem;
+}
+
+.modal-header{
+  color: hsl(211, 10%, 45%);
+  font-size: 2.5rem;
+}
+
+.modal-text{
+  font-size: 2rem;
+  color:  hsl(211, 10%, 45%);
+}
+
+.modal-button-group{
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 1.7rem;
+  
+  > *{
+    font-size: 1.7rem;
+    padding: 1.2rem 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: hsl(223, 19%, 93%);
+    border-radius: 1rem;
+    border: none;
+  }
+}
+
+.confirm-delete-button{
+  background-color:  hsl(358, 79%, 66%);
+}
+
+.cancel-delete-button{
+  background-color: hsl(211, 10%, 45%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

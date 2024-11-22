@@ -1,25 +1,17 @@
 import { useContext } from "react";
-import { ThreadContext } from "../App";
+import { AppContext } from "../App";
 
 function ActionButton({ isOwnComment, commentId }) {
 
-    const {thread, setThread} = useContext(ThreadContext)
-
-    const handleDeleteComment = () => {
-        setThread((prevThread) => {
-            const updatedComments = prevThread.comments.filter((comment) => comment.id !== commentId)
-            return {
-                ...prevThread,
-                comments: updatedComments
-            }
-        })
-        
-    }
+    const { setCommentId, setShowModal } = useContext(AppContext)
     
     return (
         isOwnComment ? (
             <div className="action-button-group">
-                <div className="action-button-container" onClick={handleDeleteComment}>
+                <div className="action-button-container" onClick={() => {
+                    setShowModal(true) // display comment deletion modal
+                    setCommentId(commentId) // set id of comment to delete
+                }}>
                     <img
                         className="action-button-icon"
                         src='/images/icon-delete.svg' alt=""
