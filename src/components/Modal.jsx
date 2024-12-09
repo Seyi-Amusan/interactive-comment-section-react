@@ -9,18 +9,31 @@ function Modal() {
     const handleDeleteComment = (commentId) => {
         //update comments array for rerender
         setThread((prevThread) => {
-            const updatedComments = prevThread.comments.filter((comment) => !(comment.id == commentId))
+
+            const updateComments = ((comments) => {
+                return comments
+                    .filter((comment) => !(comment.id == commentId))
+                    .map((comment) => {
+                        if (comment.replies && comment.replies.length > 0) {
+                            return {
+                                ...comment,
+                                replies: updateComments(comment.replies)
+                            }
+                        }
+                        return comment
+                    })
+            })
             
             return {
                 ...prevThread,
-                comments: updatedComments
+                comments: updateComments(prevThread.comments)
             }
         })
 
     }
 
     return ( 
-        <div className='modal-bg' id={!showModal && 'hidden'}>
+        <div className='modal-bg' id={!showModal ? 'hidden' : ''}>
             <div className="modal-container">
                 <h2 className="modal-header">Delete Comment</h2>
                 <p className="modal-text">

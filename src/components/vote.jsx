@@ -6,38 +6,49 @@ function Vote({ vote, commentId }) {
 
     const handleVote = (type) => {
         setThread((prevThread) => {
-            const updatedComments = prevThread.comments.map((comment) => {
-                if (comment.id === commentId) {
-                    let newScore = comment.score;
-                    let newVoted = null;
-
-                    if (!comment.voted) {
-                        // First-time vote
-                        newScore = type === "upvote" ? newScore + 1 : newScore - 1;
-                        newVoted = type;
-                    } else if (comment.voted === type) {
-                        // Undo the vote
-                        newScore = type === "upvote" ? newScore - 1 : newScore + 1;
-                        newVoted = null;
-                    } else {
-                        // Change vote type
-                        newScore =
-                            type === "upvote" ? newScore + 2 : newScore - 2;
-                        newVoted = type;
+            const updateCommentVote = (comments) => {
+                return comments.map((comment) => {
+                    if (comment.id === commentId) {
+                        let newScore = comment.score;
+                        let newVoted = null;
+    
+                        if (!comment.voted) {
+                            // First-time vote
+                            newScore = type === "upvote" ? newScore + 1 : newScore - 1;
+                            newVoted = type;
+                        } else if (comment.voted === type) {
+                            // Undo the vote
+                            newScore = type === "upvote" ? newScore - 1 : newScore + 1;
+                            newVoted = null;
+                        } else {
+                            // Change vote type
+                            newScore =
+                                type === "upvote" ? newScore + 2 : newScore - 2;
+                            newVoted = type;
+                        }
+    
+                        return {
+                            ...comment,
+                            score: Math.max(0, newScore),
+                            voted: newVoted,
+                        };
                     }
 
-                    return {
-                        ...comment,
-                        score: Math.max(0, newScore),
-                        voted: newVoted,
-                    };
-                }
-                return comment;
-            });
+                    if (comment.replies && comment.replies.length > 0) {
+                        return {
+                            ...comment,
+                            replies: updateCommentVote(comment.replies)
+                        }
+                    }
+
+                    return comment
+                })
+
+            };
 
             return {
                 ...prevThread,
-                comments: updatedComments,
+                comments: updateCommentVote(prevThread.comments),
             };
         });
     };

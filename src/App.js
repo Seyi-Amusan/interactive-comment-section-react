@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 import './App.css';
 import CommentContainer from './components/commentContainer';
 import Modal from './components/Modal';
+import Input from './components/input';
 
 export const AppContext = createContext()
 
@@ -125,27 +126,7 @@ function App() {
             }
           </div>
 
-          <div className='input-container'>
-
-            <img className='input-avatar' src={currentUser?.image?.png} alt='' />
-
-            <textarea
-              placeholder='Add a comment...'
-              value={newCommentContent}
-              onChange={(event) => setNewCommentContent(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key == 'Enter' && !event.shiftKey) {
-                  event.preventDefault()
-                  handleAddComment(newCommentContent)
-                }
-              }}
-            />
-
-            <button
-              className='send-button'
-              onClick={() => handleAddComment(newCommentContent)}
-            >send</button>
-          </div>
+          <Input currentUser={currentUser} value={newCommentContent} onChangeHandler={setNewCommentContent} onSubmitHandler={handleAddComment} />
         </div>
         <Modal />
       </AppContext.Provider>
