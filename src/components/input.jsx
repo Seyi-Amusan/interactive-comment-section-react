@@ -1,10 +1,13 @@
+
+
 function Input(props) {
 
-    const {currentUser, value, onChangeHandler, onSubmitHandler} = props
+  const { value, onChangeHandler, onSubmitHandler, imgSrc, type } = props
+  
     return ( 
         <div className='input-container'>
 
-            <img className='input-avatar' src={currentUser?.image?.png} alt='' />
+            <img className='input-avatar' src={imgSrc} alt='' />
 
             <textarea
               placeholder='Add a comment...'
@@ -21,7 +24,7 @@ function Input(props) {
             <button
               className='send-button'
               onClick={() => onSubmitHandler(value)}
-            >send</button>
+        >{ type ? type : 'send' }</button>
         </div>
         
      );

@@ -145,7 +145,7 @@ button, .upvote, .downvote{
 .input-container{
   width: 70rem;
   height: 15rem;
-  margin: 3rem auto;
+  margin: 0 auto 3rem;
   padding: 2rem;
   border-radius: 1.5rem;
   background-color: hsl(0, 0%, 100%);

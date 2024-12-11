@@ -34,9 +34,10 @@ function App() {
   const { currentUser, comments } = thread
 
 
+
   //function to distinguish comments made by logged in user
   const checkIsOwnComment = (commnetAuthor, currentUser) => {
-    if (commnetAuthor == currentUser) return true
+    if (commnetAuthor === currentUser) return true
     return false
   }
 
@@ -71,7 +72,7 @@ function App() {
 
     return (
 
-      <AppContext.Provider value={{ showModal, setShowModal, commentId, setCommentId, thread, setThread}}>
+      <AppContext.Provider value={{ showModal, setShowModal, commentId, setCommentId, thread, setThread, currentUser}}>
         <div>
           <div className='main'>
             {
@@ -87,7 +88,7 @@ function App() {
                       content={content}
                       user={user}
                       createdAt={createdAt}
-                      isOwnComment={checkIsOwnComment(user.username, currentUser.username)}
+                      isOwnComment={checkIsOwnComment(user?.username, currentUser.username)}
                     />
 
                     {/* if there are replies to the comment node */}
@@ -126,7 +127,7 @@ function App() {
             }
           </div>
 
-          <Input currentUser={currentUser} value={newCommentContent} onChangeHandler={setNewCommentContent} onSubmitHandler={handleAddComment} />
+          <Input currentUser={currentUser} value={newCommentContent} onChangeHandler={setNewCommentContent} onSubmitHandler={handleAddComment} imgSrc={ currentUser?.image?.png } />
         </div>
         <Modal />
       </AppContext.Provider>

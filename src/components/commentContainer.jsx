@@ -4,16 +4,61 @@ import ActionButton from "./actionButtons";
 import Input from './input';
 import { useState } from 'react';
 
-function CommentContainer(props) {
+import { useContext } from "react";
+import { AppContext } from "../App";
 
-    const [showInput, setShowInput] = useState(false)
+
+function CommentContainer(props) {
 
     const { vote, content, user, createdAt, replyComment, replyingTo, isOwnComment, commentId } = props
 
-    const displayInput = () => {
-        console.log('clicked');
-        setShowInput(true)
+    const { currentUser, thread, setThread } = useContext(AppContext)
+
+    const [showReplyInput, setShowReplyInput] = useState(false)
+
+    const [inputValue, setInputValue] = useState('')
+
+    const handleEditComment = () => {
+        console.log('edit function call');
+
+        console.log(commentId);
+        
     }
+
+    const handleReplyToComment = (value) => {
+
+        //do nothing for empty inputs and remove reply input container
+        if (!value) setShowReplyInput(false)
+        
+        //create a new reply comment object
+        const newReply = {
+            id: Date.now(), // Unique ID for the new comment
+            score: 0, 
+            content: value, // The content passed as an argument
+            user: currentUser, 
+            createdAt: 'Just now',
+            isOwnComment: true
+        };
+
+
+        const updatedComments = thread.comments.map((comment) => {
+            if (comment.id == commentId) {
+                comment.replies = [...comment.replies, newReply]
+            }
+            return comment
+        })
+
+
+        setThread((prevThread) => {
+            return {
+                ...prevThread,
+                comments: [...prevThread.comments, updatedComments]
+            }
+        })
+
+        //remove reply input container
+        setShowReplyInput(false)
+      };
     
     return (
         <>
@@ -21,14 +66,22 @@ function CommentContainer(props) {
             <div className={`comment-container ${replyComment ? 'reply-comment-container' : ''}`}>
                 <Vote vote={vote} commentId={commentId} />
                 <CommentHeader user={user} createdAt={createdAt} isOwnComment={isOwnComment} />
-                <ActionButton isOwnComment={isOwnComment} commentId={commentId} onClickHandler={ displayInput } />
+                <ActionButton isOwnComment={isOwnComment} commentId={commentId}
+                    onClickHandler={(type) =>
+                        {
+                            type == 'reply' && setShowReplyInput(true)
+                        }
+                    }
+                />
                 <p className="comment">
                     {replyingTo && <span className="replying-to">@{replyingTo}</span>} {content}
                 </p>
             </div>
             
 
-            {showInput && <Input />}
+            {
+                showReplyInput && <Input imgSrc={currentUser.image.png} value={inputValue} onChangeHandler={setInputValue} type='reply' onSubmitHandler={handleReplyToComment} />
+            }
             
         </>
        
