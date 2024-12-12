@@ -67,6 +67,7 @@ function App() {
 
     //clear the text area
     setNewCommentContent('')
+
   };
 
 

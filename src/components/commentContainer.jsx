@@ -18,6 +18,8 @@ function CommentContainer(props) {
 
     const [inputValue, setInputValue] = useState('')
 
+
+
     const handleEditComment = () => {
         console.log('edit function call');
 
@@ -29,30 +31,34 @@ function CommentContainer(props) {
 
         //do nothing for empty inputs and remove reply input container
         if (!value) setShowReplyInput(false)
-        
-        //create a new reply comment object
-        const newReply = {
-            id: Date.now(), // Unique ID for the new comment
-            score: 0, 
-            content: value, // The content passed as an argument
-            user: currentUser, 
-            createdAt: 'Just now',
-            isOwnComment: true
-        };
-
 
         const updatedComments = thread.comments.map((comment) => {
             if (comment.id == commentId) {
-                comment.replies = [...comment.replies, newReply]
+
+                //create a new reply comment object
+                const newReply = {
+                    id: Date.now(), // Unique ID for the new comment
+                    score: 0, 
+                    content: value, // The content passed as an argument
+                    replyingTo:  comment.user.username,
+                    user: currentUser, 
+                    createdAt: 'Just now',
+                    isOwnComment: true
+                };
+                
+                return {
+                    ...comment,
+                    replies: [...(comment.replies || []), newReply]
+                }
             }
             return comment
         })
 
-
+        //update thread for rerender
         setThread((prevThread) => {
             return {
                 ...prevThread,
-                comments: [...prevThread.comments, updatedComments]
+                comments: updatedComments
             }
         })
 
