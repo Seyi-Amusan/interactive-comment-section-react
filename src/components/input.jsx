@@ -10,7 +10,7 @@ function Input(props) {
             <img className='input-avatar' src={imgSrc} alt='' />
 
             <textarea
-              placeholder='Add a comment...'
+              placeholder='Add comment...'
               value={value}
               onChange={(event) => onChangeHandler(event.target.value)}
               onKeyDown={(event) => {

@@ -9,7 +9,6 @@ export const AppContext = createContext()
 
 function App() {
 
-
   const [thread, setThread] = useState({
     currentUser: {},
     comments: [],
@@ -101,9 +100,6 @@ function App() {
                           {replies.map((reply) => {
 
                             const { score, content, id, user, createdAt, replyingTo } = reply
-
-                            // console.log(reply);
-                            
                           
                             return <CommentContainer
                               replyComment={true}

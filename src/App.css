@@ -27,9 +27,17 @@ button, .upvote, .downvote{
   margin: 5rem auto;
 }
 
+textarea{
+  font-family: "Rubik", sans-serif;
+  font-size: 1.9rem;
+  color:  hsl(211, 10%, 45%);
+
+} 
+
 .comment-container{
   background-color: hsl(0, 0%, 100%);
   padding: 2rem;
+  /* height: auto; */
   border-radius: 2rem;
   margin-bottom: 3rem;
 
@@ -118,7 +126,6 @@ button, .upvote, .downvote{
   margin-left: 1rem;
 }
 
-
 .reply, .edit{
   color: hsl(238, 40%, 52%);
 }
@@ -127,11 +134,16 @@ button, .upvote, .downvote{
   color: hsl(358, 79%, 66%);
 }
 
+.comment-box{
+  grid-column: span 2;
+
+  height: 100%;
+}
+
 .comment{
   font-size: 2rem;
   color:  hsl(211, 10%, 45%);
 
-  grid-column: span 2;
 }
 
 .loading{
@@ -173,7 +185,7 @@ textarea::placeholder{
   width: 4.5rem;
 }
 
-.send-button{
+.send-button, .update-button{
   padding: 1.5rem 2rem;
   font-weight: bold;
   font-size: 2.1rem;
@@ -191,6 +203,13 @@ textarea::placeholder{
   border-radius: 3px;
   color: hsl(0, 0%, 100%);
   background-color: hsl(238, 40%, 52%);
+}
+
+
+.edit-input-container{
+  width: 100%;
+  padding: .8rem;
+  margin-bottom: 1rem;
 }
 
 textarea:focus{
@@ -211,12 +230,11 @@ textarea:focus{
 
 @media (max-width: 490px) {
   .reply-comment-container{
-    width: 97%;
+    width: 90vw;
   }
 
   .comment-container{
     grid-template-columns: 1fr max-content;
-    /* grid-template-rows: repeat(3, max-content); */
     row-gap: 2rem;
   }
 
@@ -298,24 +316,3 @@ textarea:focus{
 .cancel-delete-button{
   background-color: hsl(211, 10%, 45%);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

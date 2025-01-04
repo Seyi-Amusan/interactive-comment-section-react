@@ -2,8 +2,8 @@ import Vote from './vote'
 import CommentHeader from "./commentHeader";
 import ActionButton from "./actionButtons";
 import Input from './input';
-import { useState } from 'react';
 
+import { useState } from 'react';
 import { useContext } from "react";
 import { AppContext } from "../App";
 
@@ -15,15 +15,39 @@ function CommentContainer(props) {
     const { currentUser, thread, setThread } = useContext(AppContext)
 
     const [showReplyInput, setShowReplyInput] = useState(false)
+    const [showEditInput, setShowEditInput] = useState(false)
+    const [editInputValue, setEditInputValue] = useState(content)
+    const [replyInputValue, setReplyInputValue] = useState('')
+    
 
-    const [inputValue, setInputValue] = useState('')
+    const handleEditComment = (value) => {
 
+        
+        setThread((prevThread) => {
 
+            const updateComments = (comments) => {
+                return comments.map((comment) => {
+                    if (comment.id === commentId) {
+                        return {
+                            ...comment,
+                            content: value
+                        } 
+                    } else if(comment.replies && comment.replies.length > 0) {
+                        return {
+                            ...comment,
+                            replies: updateComments(comment.replies)
+                        }
+                    } return comment
+                })
+            }
+    
+            return {
+                ...prevThread,
+                comments: updateComments(prevThread.comments)
+            }
+        })
 
-    const handleEditComment = () => {
-        console.log('edit function call');
-
-        console.log(commentId);
+        setShowEditInput(false)
         
     }
 
@@ -74,27 +98,51 @@ function CommentContainer(props) {
                 <CommentHeader user={user} createdAt={createdAt} isOwnComment={isOwnComment} />
                 <ActionButton isOwnComment={isOwnComment} commentId={commentId}
                     onClickHandler={(type) =>
-                        {
-                            type == 'reply' && setShowReplyInput(true)
+                    {
+                        type == 'reply' && setShowReplyInput(true)
+                        type == 'edit' && setShowEditInput(true)
                         }
                     }
                 />
-                <p className="comment">
-                    {replyingTo && <span className="replying-to">@{replyingTo}</span>} {content}
-                </p>
+
+                <div className='comment-box'>
+                    {
+                        showEditInput ? (
+                            <div className='edit-container'>
+                                <textarea
+                                    className='edit-input-container'
+                                    value={editInputValue}
+                                    onChange={(event) => setEditInputValue(event.target.value)}
+                                    onKeyDown={(event) => {
+                                        if (event.key == 'Enter' && !event.shiftKey) {
+                                            event.preventDefault()
+                                            handleEditComment(editInputValue, thread)
+                                        }
+                                    }}
+                                />
+
+                                <button className='update-button'
+                                    onClick={(event) => {
+                                        event.preventDefault()
+                                        handleEditComment(editInputValue, thread)
+                                    }}
+                                >update</button>
+                            </div>
+                        ):
+                        <p className='comment'>
+                            {replyingTo && <span className="replying-to">@{replyingTo}</span>} {content}
+                        </p>
+                    }
+                </div>
             </div>
             
 
             {
-                showReplyInput && <Input imgSrc={currentUser.image.png} value={inputValue} onChangeHandler={setInputValue} type='reply' onSubmitHandler={handleReplyToComment} />
+                showReplyInput && <Input imgSrc={currentUser.image.png} value={replyInputValue} onChangeHandler={setReplyInputValue} type='reply' onSubmitHandler={handleReplyToComment} />
             }
             
         </>
        
-    
-    
-        
-
     );
 }
 
