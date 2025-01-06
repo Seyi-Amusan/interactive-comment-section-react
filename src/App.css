@@ -41,6 +41,10 @@ textarea{
   border-radius: 2rem;
   margin-bottom: 3rem;
 
+  overflow-wrap: break-word; /* Ensures long words wrap properly */
+  word-break: break-word;    /* Breaks long words to prevent overflow */
+  white-space: normal;
+
   display: grid;
   grid-template-columns: max-content 1fr max-content;
   grid-template-rows: max-content 1fr;
@@ -143,7 +147,6 @@ textarea{
 .comment{
   font-size: 2rem;
   color:  hsl(211, 10%, 45%);
-
 }
 
 .loading{

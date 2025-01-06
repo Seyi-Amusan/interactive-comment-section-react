@@ -56,35 +56,55 @@ function CommentContainer(props) {
         //do nothing for empty inputs and remove reply input container
         if (!value) setShowReplyInput(false)
 
-        const updatedComments = thread.comments.map((comment) => {
-            if (comment.id == commentId) {
-
-                //create a new reply comment object
-                const newReply = {
-                    id: Date.now(), // Unique ID for the new comment
-                    score: 0, 
-                    content: value, // The content passed as an argument
-                    replyingTo:  comment.user.username,
-                    user: currentUser, 
-                    createdAt: 'Just now',
-                    isOwnComment: true
-                };
-                
-                return {
-                    ...comment,
-                    replies: [...(comment.replies || []), newReply]
-                }
-            }
-            return comment
-        })
+        
 
         //update thread for rerender
         setThread((prevThread) => {
+
+            // Recursive function to locate and append reply
+            const addReply = (comments) => {
+                return comments.map((comment) => {
+        
+                    // Create the new reply object
+                    const newReply = {
+                        id: Date.now(), // Unique ID
+                        score: 0,
+                        content: value, // Content for reply
+                        replyingTo: comment.user.username, // Username being replied to
+                        user: currentUser,
+                        createdAt: 'Just now',
+                        isOwnComment: true
+                    };
+        
+                    // Check if this is the target comment or reply
+                    if (comment.id === commentId) {
+                        // Append directly to the existing replies array
+                        return {
+                            ...comment,
+                            replies: [...comment.replies, newReply] // Keep replies flat
+                        };
+                    }
+        
+                    // Recursively check nested replies
+                    if (comment.replies && comment.replies.length > 0) {
+                        return {
+                            ...comment,
+                            replies: addReply(comment.replies) // Dive deeper if needed
+                        };
+                    }
+        
+                    return comment; // Return unchanged if no match
+                });
+            };
+        
+            // Update thread with appended replies
             return {
                 ...prevThread,
-                comments: updatedComments
-            }
-        })
+                comments: addReply(prevThread.comments)
+            };
+        });
+        
+        
 
         //remove reply input container
         setShowReplyInput(false)
@@ -127,7 +147,7 @@ function CommentContainer(props) {
                                         handleEditComment(editInputValue, thread)
                                     }}
                                 >update</button>
-                            </div>
+                            </div> 
                         ):
                         <p className='comment'>
                             {replyingTo && <span className="replying-to">@{replyingTo}</span>} {content}
