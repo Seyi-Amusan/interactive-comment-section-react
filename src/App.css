@@ -225,6 +225,13 @@ textarea:focus{
   padding: 0 2rem;
 }
 
+
+@media (max-width: 424px) {
+  html{
+    font-size: 48%;
+  }
+}
+
 @media (max-width: 563px) {
   .main, .input-container{
     width: calc(100vw - 4rem);

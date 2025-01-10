@@ -25,7 +25,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch('./data.json')
+    fetch(`${process.env.PUBLIC_URL}/data.json`)
       .then(res => res.json())
       .then(data => setThread(data))
   }, [])

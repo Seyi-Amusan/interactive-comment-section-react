@@ -1,10 +1,11 @@
 function CommentHeader(props) {
     
-    const {user, createdAt, isOwnComment} = props
+    const { user, createdAt, isOwnComment } = props
  
     return (
         <div className='comment-header-container'>
-            <img className="avatar" src={user?.image?.png} alt="" />
+            {/* <img className="avatar" src={user?.image?.png} alt="" /> */}
+                <img className="avatar" src = {`${process.env.PUBLIC_URL}/${user?.image?.png}`} alt="" />
             <h2 className="username">{user?.username}</h2>
             {
                 isOwnComment && <span className="you">you</span>

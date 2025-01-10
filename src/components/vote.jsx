@@ -4,6 +4,9 @@ import { AppContext } from "../App";
 function Vote({ vote, commentId }) {
     const { setThread } = useContext(AppContext);
 
+    console.log(`${process.env.PUBLIC_URL}/images/icon-plus.svg`);
+    
+
     const handleVote = (type) => {
         setThread((prevThread) => {
             const updateCommentVote = (comments) => {
@@ -57,14 +60,14 @@ function Vote({ vote, commentId }) {
         <div className="vote-container">
             <img
                 className="upvote"
-                src="./images/icon-plus.svg"
+                src = {`${process.env.PUBLIC_URL}/images/icon-plus.svg`}
                 alt="Upvote"
                 onClick={() => handleVote("upvote")}
             />
             <span className="vote-count">{vote}</span>
             <img
                 className="downvote"
-                src="./images/icon-minus.svg"
+                src = {`${process.env.PUBLIC_URL}/images/icon-minus.svg`}
                 alt="Downvote"
                 onClick={() => handleVote("downvote")}
             />
