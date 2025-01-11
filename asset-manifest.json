@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/interactive-comment-section-react/static/css/main.da4e263b.css",
-    "main.js": "/interactive-comment-section-react/static/js/main.30523a5c.js",
+    "main.css": "/interactive-comment-section-react/static/css/main.f7432a76.css",
+    "main.js": "/interactive-comment-section-react/static/js/main.d6e14639.js",
     "static/js/453.a6a97343.chunk.js": "/interactive-comment-section-react/static/js/453.a6a97343.chunk.js",
     "index.html": "/interactive-comment-section-react/index.html",
-    "main.da4e263b.css.map": "/interactive-comment-section-react/static/css/main.da4e263b.css.map",
-    "main.30523a5c.js.map": "/interactive-comment-section-react/static/js/main.30523a5c.js.map",
+    "main.f7432a76.css.map": "/interactive-comment-section-react/static/css/main.f7432a76.css.map",
+    "main.d6e14639.js.map": "/interactive-comment-section-react/static/js/main.d6e14639.js.map",
     "453.a6a97343.chunk.js.map": "/interactive-comment-section-react/static/js/453.a6a97343.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.da4e263b.css",
-    "static/js/main.30523a5c.js"
+    "static/css/main.f7432a76.css",
+    "static/js/main.d6e14639.js"
   ]
 }
