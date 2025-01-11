@@ -15,20 +15,20 @@ function ActionButton({ isOwnComment, commentId, onClickHandler }) {
                 }}>
                     <img
                         className="action-button-icon"
-                        src='/images/icon-delete.svg' alt=""
+                        src={`${process.env.PUBLIC_URL}/images/icon-delete.svg`} alt=""
                     />
                     <span className={'action-button-text delete'}>Delete</span>
                 </div>
 
                 <div className="action-button-container" onClick={()=> {onClickHandler('edit')}}>
-                    <img className="action-button-icon" src='/images/icon-edit.svg' alt="" />
+                    <img className="action-button-icon" src={`${process.env.PUBLIC_URL}/images/icon-edit.svg`} alt="" />
                     <span className={'action-button-text edit'}>Edit</span>
                 </div>
 
             </div>
         ) : (
             <div className="action-button-container" onClick={() => {onClickHandler('reply')}}>
-                <img className="action-button-icon" src='/images/icon-reply.svg' alt="" />
+                <img className="action-button-icon" src={`${process.env.PUBLIC_URL}/images/icon-reply.svg`} alt="" />
                 <span className={'action-button-text reply'}>reply</span>
             </div>
         )

@@ -3,11 +3,14 @@
 function Input(props) {
 
   const { value, onChangeHandler, onSubmitHandler, imgSrc, type } = props
+
+  // console.log(imgSrc == '/interactive-comment-section-react/./images/avatars/image-juliusomo.png');
+  
   
     return ( 
         <div className='input-container'>
 
-            <img className='input-avatar' src={imgSrc} alt='' />
+            <img className='input-avatar' src='/interactive-comment-section-react/./images/avatars/image-juliusomo.png' alt='' />
 
             <textarea
               placeholder='Add comment...'

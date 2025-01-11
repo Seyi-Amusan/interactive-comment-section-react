@@ -56,53 +56,68 @@ function CommentContainer(props) {
         //do nothing for empty inputs and remove reply input container
         if (!value) setShowReplyInput(false)
 
-        
-
-        //update thread for rerender
         setThread((prevThread) => {
-
-            // Recursive function to locate and append reply
-            const addReply = (comments) => {
+            const addReplyToComments = (comments) => {
                 return comments.map((comment) => {
-        
-                    // Create the new reply object
-                    const newReply = {
-                        id: Date.now(), // Unique ID
-                        score: 0,
-                        content: value, // Content for reply
-                        replyingTo: comment.user.username, // Username being replied to
-                        user: currentUser,
-                        createdAt: 'Just now',
-                        isOwnComment: true
-                    };
-        
-                    // Check if this is the target comment or reply
+                    // If the target is the comment itself
                     if (comment.id === commentId) {
-                        // Append directly to the existing replies array
+                        const newReply = {
+                            id: Date.now(),
+                            score: 0,
+                            content: value,
+                            replyingTo: comment.user.username,
+                            user: currentUser,
+                            createdAt: 'Just now',
+                            isOwnComment: true
+                        };
+        
+                        // Append newReply to the comment's replies array
                         return {
                             ...comment,
-                            replies: [...comment.replies, newReply] // Keep replies flat
+                            replies: [...comment.replies, newReply]
                         };
                     }
         
-                    // Recursively check nested replies
+                    // If the target is inside this comment's replies array
                     if (comment.replies && comment.replies.length > 0) {
+                        const updatedReplies = comment.replies.map((reply) => {
+                            if (reply.id === commentId) {
+                                const newReply = {
+                                    id: Date.now(),
+                                    score: 0,
+                                    content: value,
+                                    replyingTo: reply.user.username,
+                                    user: currentUser,
+                                    createdAt: 'Just now',
+                                    isOwnComment: true
+                                };
+        
+                                // Append newReply to the parent replies array
+                                return [reply, newReply]
+                                    
+                            }
+        
+                            return reply; // Return unchanged if not the target
+                        });
+        
                         return {
                             ...comment,
-                            replies: addReply(comment.replies) // Dive deeper if needed
+                            replies: updatedReplies.flat()
                         };
                     }
         
-                    return comment; // Return unchanged if no match
+                    // Return unchanged comment if no match
+                    return comment;
                 });
             };
         
-            // Update thread with appended replies
             return {
                 ...prevThread,
-                comments: addReply(prevThread.comments)
+                comments: addReplyToComments(prevThread.comments)
             };
         });
+            
+            
         
         
 

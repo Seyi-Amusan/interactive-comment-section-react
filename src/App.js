@@ -124,7 +124,7 @@ function App() {
             }
           </div>
 
-          <Input currentUser={currentUser} value={newCommentContent} onChangeHandler={setNewCommentContent} onSubmitHandler={handleAddComment} imgSrc={ currentUser?.image?.png } />
+          <Input currentUser={currentUser} value={newCommentContent} onChangeHandler={setNewCommentContent} onSubmitHandler={handleAddComment} imgSrc= {`${process.env.PUBLIC_URL}/${currentUser?.image?.png}`  } />
         </div>
         <Modal />
       </AppContext.Provider>

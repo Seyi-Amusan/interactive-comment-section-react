@@ -37,13 +37,8 @@ textarea{
 .comment-container{
   background-color: hsl(0, 0%, 100%);
   padding: 2rem;
-  /* height: auto; */
   border-radius: 2rem;
   margin-bottom: 3rem;
-
-  overflow-wrap: break-word; /* Ensures long words wrap properly */
-  word-break: break-word;    /* Breaks long words to prevent overflow */
-  white-space: normal;
 
   display: grid;
   grid-template-columns: max-content 1fr max-content;
@@ -228,7 +223,7 @@ textarea:focus{
 
 @media (max-width: 424px) {
   html{
-    font-size: 48% ;
+    font-size: 45% ;
   }
 }
 

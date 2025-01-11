@@ -4,9 +4,6 @@ import { AppContext } from "../App";
 function Vote({ vote, commentId }) {
     const { setThread } = useContext(AppContext);
 
-    console.log(`${process.env.PUBLIC_URL}/images/icon-plus.svg`);
-    
-
     const handleVote = (type) => {
         setThread((prevThread) => {
             const updateCommentVote = (comments) => {
