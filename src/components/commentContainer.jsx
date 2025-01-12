@@ -54,7 +54,10 @@ function CommentContainer(props) {
     const handleReplyToComment = (value) => {
 
         //do nothing for empty inputs and remove reply input container
-        if (!value) setShowReplyInput(false)
+        if (!value) {
+            setShowReplyInput(false)
+            return
+        }
 
         setThread((prevThread) => {
             const addReplyToComments = (comments) => {
@@ -118,8 +121,8 @@ function CommentContainer(props) {
         });
             
             
-        
-        
+        //clear the textarea
+        setReplyInputValue('')
 
         //remove reply input container
         setShowReplyInput(false)
